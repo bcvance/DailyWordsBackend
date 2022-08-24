@@ -8,13 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 import os
-from twilio.rest import Client
 
 # Create your views here.
-account_sid = os.environ['TWILIO_ACCOUNT_SID']
-auth_token = os.environ['TWILIO_AUTH_TOKEN']
-client = Client(account_sid, auth_token)
-
 
 # deletes words from database
 # TODO: authenticate token for security
@@ -49,22 +44,22 @@ def save_word(request):
     return HttpResponse(status=204)
 
 # sends words to user's phone
-@csrf_exempt
-@api_view(('POST',))
-@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
-def send(request):
-    last_five = Word.objects.all().order_by('-id')[:5]
-    body_list = [f'{entry.original}: {entry.translation}\n' for entry in last_five]
-    body_string = ''.join(body_list)
-    # print(body_string)
-    message = client.messages.create(
-            body=body_string,
-            from_='+18106311913',
-            to='+18157939677'
-        )
+# @csrf_exempt
+# @api_view(('POST',))
+# @renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+# def send(request):
+#     last_five = Word.objects.all().order_by('-id')[:5]
+#     body_list = [f'{entry.original}: {entry.translation}\n' for entry in last_five]
+#     body_string = ''.join(body_list)
+#     # print(body_string)
+#     message = client.messages.create(
+#             body=body_string,
+#             from_='+18106311913',
+#             to='+18157939677'
+#         )
 
-    # print(message.sid)
-    return HttpResponse(status=204)
+#     # print(message.sid)
+#     return HttpResponse(status=204)
 
 
 # save updated user settings to database
