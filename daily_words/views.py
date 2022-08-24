@@ -65,3 +65,18 @@ def send(request):
 
     # print(message.sid)
     return HttpResponse(status=204)
+
+
+# save updated user settings to database
+@csrf_exempt
+@api_view(('POST',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+def update(request):
+    data = json.loads(request.body)
+    user_info = data['userInfo']
+    user = User.objects.get(google_id=user_info['sub'])
+    user.send_to_phone = data['sendToPhone']
+    user.send_to_email = data['sendToEmail']
+    user.phone_number = data['phoneNumber']
+    user.num_words = data['numWords']
+    return JsonResponse({'message':'successfully updated user settings'},status=204)
