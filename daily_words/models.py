@@ -13,6 +13,7 @@ class Word(models.Model):
     original = models.CharField(max_length=40)
     translation = models.CharField(max_length=40)
     user = models.ForeignKey(User, on_delete = models.CASCADE, related_name = "words", null=True)
+    saved_date = models.DateField(auto_now=True)
 
     class Meta:
         unique_together = ('original', 'user')

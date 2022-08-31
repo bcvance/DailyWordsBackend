@@ -18,6 +18,7 @@ import os
 @renderer_classes((TemplateHTMLRenderer, JSONRenderer))
 def delete_word(request):
     data = json.loads(request.body)
+    print(data)
     word = data['word']
     user_info = data['userInfo']
     google_id = user_info['sub']
@@ -33,6 +34,7 @@ def delete_word(request):
 def save_word(request):
     print('saveWord called')
     data = json.loads(request.body)
+    print(data)
     word = data['word']
     translation = data['translation']
     user_info = data['userInfo']
@@ -74,4 +76,5 @@ def update(request):
     user.send_to_email = data['sendToEmail']
     user.phone_number = data['phoneNumber']
     user.num_words = data['numWords']
+    user.save()
     return JsonResponse({'message':'successfully updated user settings'},status=204)
